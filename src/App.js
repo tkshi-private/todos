@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {observable} from "mobx";
-import {observer} from 'mobx-react'
+// import {observable} from "mobx";
+// import {observer} from 'mobx-react'
 
 @observable words = new Array();
 @observer
@@ -12,7 +12,7 @@ class HelloWidget extends React.Component {
   constructor() {
     super();
     this.state = {
-      words: words = new Array(),
+      words: words,
       new: '',
     };
   }
