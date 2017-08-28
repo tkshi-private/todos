@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-    // buttonを押すと項目が追加,textを反映
-    // 押した時にstateを渡す？
+import {observable} from "mobx";
+import {observer} from 'mobx-react'
 
-var words = new Array();
+@observable words = new Array();
+@observer
 
 class HelloWidget extends React.Component {
   constructor() {
     super();
     this.state = {
-      words: words,
+      words: words = new Array(),
       new: '',
     };
   }
