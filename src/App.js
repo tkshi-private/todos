@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import firebase from 'firebase';
 import {observable} from "mobx";
-import MobxFirebaseStore from 'mobx-firebase-store';
-import {createAutoSubscriber} from 'firebase-nest';
 import {observer} from 'mobx-react'
 
 class Todo {
@@ -11,25 +10,36 @@ class Todo {
     @observable newWords = '';
 }
 
-// const fbApp = firebase.initializeApp({
-//   apiKey: "AIzaSyAVeQRu8yodwzbdJXBY7AcXxSEoQXYt-8I",
-//   authDomain: "react-todo-6f008.firebaseapp.com",
-//   databaseURL: "https://react-todo-6f008.firebaseio.com",
-//   projectId: "react-todo-6f008",
-//   storageBucket: "",
-//   messagingSenderId: "821512865685"
-// }, "react-todo");
+const config = {
+  apiKey: "AIzaSyAVeQRu8yodwzbdJXBY7AcXxSEoQXYt-8I",
+  authDomain: "react-todo-6f008.firebaseapp.com",
+  databaseURL: "https://react-todo-6f008.firebaseio.com",
+  projectId: "react-todo-6f008",
+  storageBucket: "",
+  messagingSenderId: "821512865685"
+};
+firebase.initializeApp(config);
 
 var todo = new Todo();
+var db = firebase.database();
+var list = db.ref("/list");
 // const store = new MobxFirebaseStore(firebase.database(fbApp).ref());
 
 @observer class HelloWidget extends React.Component {
   constructor() {
     super();
+    list.on('child_changed', (snapshot) => {
+      var obj = snapshot.val();
+      for(var prop in obj){
+        todo.words.push(obj[prop]["message"]);
+      }
+    })
   }
 
   addWord() {
-    todo.words.push(todo.newWords);
+    var message = todo.newWords;
+    // todo.words.push(todo.newWords);
+    list.push({message});
     todo.newWords = '';
   }
   deleteWord(index){
