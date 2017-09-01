@@ -27,11 +27,14 @@ var list = db.ref("/list");
 
 @observer class HelloWidget extends React.Component {
   constructor() {
+      console.log("obj");
     super();
-    list.on('child_changed', (snapshot) => {
+    list.on('child_added', (snapshot) => {
       var obj = snapshot.val();
+      console.log("obj");
+      console.log(obj);
       for(var prop in obj){
-        todo.words.push(obj[prop]["message"]);
+        todo.words.push(obj["message"]);
       }
     })
   }
